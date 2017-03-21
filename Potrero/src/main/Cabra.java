@@ -27,7 +27,8 @@ public class Cabra {
 	
 	public void deteleCabra(){
 		viva=false;
-	    Potrero.getInstancia().cabritas.remove(this);
+	   // Potrero.getInstancia().cabritas.remove(this);
+	    Potrero.getInstancia().list.remove(this);
 	}
 	
 
@@ -35,7 +36,7 @@ public class Cabra {
 	public void setEnergia (int energiaPotrero){
 
 			
-	if(energiaPotrero>0 && energiaAcumuladaCabra<100){
+	if(energiaPotrero>0 && energiaAcumuladaCabra<150){
 						
 		Potrero.getInstancia().setEnergiaAcumulada(-10);
 		energiaAcumuladaCabra+=10;

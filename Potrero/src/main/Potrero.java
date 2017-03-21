@@ -1,7 +1,9 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import processing.core.PApplet;
 
@@ -23,6 +25,8 @@ public class Potrero {
 	float promedioConsumoPorSeg;
 	
     Thread promedio;
+    
+    List<Cabra> list;
    
 	
 
@@ -70,10 +74,12 @@ public class Potrero {
 	
 	public void pintar(){
 
-		for (int i = 0; i < cabritas.size(); i++) {
-			Cabra cabri = cabritas.get(i);
-			cabri.pintar();
-			
+		if(list!=null){
+		synchronized(list) {
+		    for (Cabra o : list) {
+		    	o.pintar();
+		    }
+		}
 		}
 		
 		
@@ -94,11 +100,15 @@ public class Potrero {
 					try{
 						
                       
-						for (int i = 0; i < cabritas.size(); i++) {
-							Cabra cabri = cabritas.get(i);
-							cabri.setEnergia(energiaAcumulada);
-							
-						}
+						
+						
+						if(list!=null){
+							synchronized(list) {
+							    for (Cabra o : list) {
+							    	o.setEnergia(energiaAcumulada);
+							    }
+							}
+							}
 						
 					Thread.sleep(500);
 					}catch (InterruptedException e) {

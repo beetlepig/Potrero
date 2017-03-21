@@ -1,6 +1,8 @@
 package main;
 
 
+import java.util.Collections;
+
 import processing.core.*;
 import processing.serial.Serial;
 
@@ -81,6 +83,7 @@ public class Main extends PApplet {
 				
 			}
 			Potrero.getInstancia().iniciado=true;
+			Potrero.getInstancia().list= Collections.synchronizedList(Potrero.getInstancia().cabritas);
 			new Thread(Potrero.getInstancia().rondaUnSegundo()).start();
 			new Thread(mandarServo()).start();
 		
