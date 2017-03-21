@@ -32,6 +32,8 @@ const int analogInPin = A0;  // Analog input pin that the potentiometer is attac
 
 float sensorValue = 0;        // value read from the pot
 
+int val; // Data received from the serial port
+
 
 
 void setup() {
@@ -42,9 +44,23 @@ void setup() {
   posActual = servo.read();
 }
 
+void recibirData(){
+     if (Serial.available()) 
+   { 
+    val = Serial.read();// read it and store it in val
+    //Serial.println(val,DEC);
+    target=val;
+   }
+  
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
   contadorTiempo=millis();
+
+  recibirData();
+
+  
   if ((contadorTiempo-tiempo)>100 ){
       tiempo=contadorTiempo;
  // read the analog in value:
@@ -82,6 +98,8 @@ void loop() {
 
 
   }
+
+  
 
  if ((contadorTiempo-tiempoDos)>10 ){
   tiempoDos=contadorTiempo;
