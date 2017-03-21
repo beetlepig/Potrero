@@ -35,6 +35,7 @@ public class Potrero {
 
 		energiaAcumulada=1000;
 		cabritas= new ArrayList<Cabra>();
+		list= Collections.synchronizedList(cabritas);
         promedio= new Thread(promediarConsumo());
         promedio.start();
 
