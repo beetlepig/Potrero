@@ -29,7 +29,7 @@ public class Potrero {
 	
 	private Potrero(){
 
-		energiaAcumulada=0;
+		energiaAcumulada=1000;
 		cabritas= new ArrayList<Cabra>();
         promedio= new Thread(promediarConsumo());
         promedio.start();
@@ -96,11 +96,11 @@ public class Potrero {
                       
 						for (int i = 0; i < cabritas.size(); i++) {
 							Cabra cabri = cabritas.get(i);
-							cabri.setEnergía(energiaAcumulada);
+							cabri.setEnergia(energiaAcumulada);
 							
 						}
 						
-					Thread.sleep(990);
+					Thread.sleep(500);
 					}catch (InterruptedException e) {
 						// TODO: handle exception
 					}
@@ -120,7 +120,7 @@ public class Potrero {
 			public void run() {
 				while(true){
 					try{
-						promedioConsumoPorSeg=acumuladoConsumoSegundo/2;
+						promedioConsumoPorSeg=acumuladoConsumoSegundo/3;
 						acumuladoConsumoSegundo=0;
 						
 						Thread.sleep(3000);
@@ -139,6 +139,7 @@ public class Potrero {
 		
 		
 	}
+	
 	
 	
 	

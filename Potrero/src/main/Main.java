@@ -12,6 +12,7 @@ public class Main extends PApplet {
 	private boolean serial;
     private String arduinoInput;
 
+    
   
 	
 	public void settings() {
@@ -28,7 +29,7 @@ public class Main extends PApplet {
 				
 			}
 			//ELEGIR EL PUERTO CORRESPONDIENTE DEL ARDUINO 
-			int elegido = 0;
+			int elegido = 1;
 			port = new Serial(this, Serial.list()[elegido], 9600);
 			println("Inicializa en: " + Serial.list()[elegido]);
 		}
@@ -52,8 +53,10 @@ public class Main extends PApplet {
 						String part1 = parts[0];
 						String part2 = parts[1]; 
 						if(part1.equalsIgnoreCase("promedio")){
+							if(Potrero.getInstancia().iniciado){
+							anadirEnergia(part2);
+							}
 							
-							initPotrero(part2);
 						}
 					}
 					
@@ -67,21 +70,57 @@ public class Main extends PApplet {
 
 	}
 	
-	void initPotrero(String instruccion){
-		Potrero.getInstancia().addEnergia(Float.parseFloat(instruccion));
+	void initPotrero(){
+
 		   
 		  
 		if(Potrero.getInstancia().cabritas.size()==0 && !Potrero.getInstancia().iniciado){
 			Potrero.getInstancia().app=this;
-			for (int i = 0; i < 70; i++) {
+			for (int i = 0; i < 50; i++) {
 				Potrero.getInstancia().cabritas.add(new Cabra());
 				
 			}
 			Potrero.getInstancia().iniciado=true;
 			new Thread(Potrero.getInstancia().rondaUnSegundo()).start();
+			new Thread(mandarServo()).start();
 		
 			
 			}
+	}
+	
+	void anadirEnergia(String instruccion){
+		Potrero.getInstancia().addEnergia(Float.parseFloat(instruccion));
+	}
+	
+	
+	Runnable mandarServo(){
+		Runnable r= new Runnable() {
+			
+			@Override
+			public void run() {
+			    while(true){
+			    	try{
+			    		if(Potrero.getInstancia().getEnergiaAcumulada()>0 && Potrero.getInstancia().getEnergiaAcumulada()<20000){
+			    	int mapeo=(int)	map(Potrero.getInstancia().getEnergiaAcumulada(), 0, 20000, 0, 180);
+			    	port.write(mapeo);
+			    		}else if(Potrero.getInstancia().getEnergiaAcumulada()<=0){
+			    			port.write(0);
+			    		} else if (Potrero.getInstancia().getEnergiaAcumulada()>=20000){
+			    			port.write(180);
+			    		}
+			    	
+			    	//	System.out.println("mandado: "+ mapeo);
+			    		Thread.sleep(1000);
+			    	}catch(InterruptedException e){
+			    		
+			    		
+			    	}
+			    }
+				
+			}
+		};
+		
+		return r;
 	}
 	
 
@@ -93,7 +132,7 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
-		
+		initPotrero();
 	}
 
 	public void mouseReleased() {

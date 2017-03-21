@@ -17,7 +17,7 @@ public class Cabra {
 
         ranX= Potrero.getInstancia().app.random(0,Potrero.getInstancia().app.width);
          ranY= Potrero.getInstancia().app.random(0,Potrero.getInstancia().app.height);
-		energiaAcumuladaCabra=100;
+		energiaAcumuladaCabra=150;
 		viva=true;
 		new Thread(existir()).start();;
 
@@ -32,7 +32,7 @@ public class Cabra {
 	
 
 	
-	public void setEnergía (int energiaPotrero){
+	public void setEnergia (int energiaPotrero){
 
 			
 	if(energiaPotrero>0 && energiaAcumuladaCabra<100){
@@ -56,7 +56,8 @@ public class Cabra {
 							
 						energiaAcumuladaCabra-=10;
 						Potrero.getInstancia().acumuladoConsumoSegundo+=10;
-						}else if(energiaAcumuladaCabra<=0) {
+						}
+						if(energiaAcumuladaCabra-10==0) {
 							deteleCabra();
 						}
 						Thread.sleep(1000);
