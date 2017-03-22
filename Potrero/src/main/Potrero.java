@@ -2,9 +2,10 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-
+import common.Message;
+import communication.Communication_to_Server;
+import logic.User;
 import processing.core.PApplet;
 
 public class Potrero {
@@ -19,6 +20,8 @@ public class Potrero {
 	
 	boolean iniciado=false;
 	
+	boolean cambioEntreMensajes;
+	
 	int acumuladoConsumoSegundo;
 	
 
@@ -27,11 +30,21 @@ public class Potrero {
     Thread promedio;
     
     List<Cabra> list;
+    
+    
+	User user;
+	Communication_to_Server cts;
+	Message msg;
    
 	
 
 	
 	private Potrero(){
+		
+		user = new User();
+		cts = Communication_to_Server.getInstance(user) ;
+		//aqui va la ip del server
+		cts.setIp("127.0.0.1");
 
 		energiaAcumulada=1000;
 		cabritas= new ArrayList<Cabra>();
@@ -48,7 +61,7 @@ public class Potrero {
 	
  
 	
-	static  Potrero getInstancia(){      //AKA INIT
+	static  Potrero getInstancia(){    
 		
 		  if(instanciaPotrero==null){
 				instanciaPotrero= new Potrero();
@@ -100,7 +113,13 @@ public class Potrero {
 				while(true){
 					try{
 						
-                      
+                      if(!cambioEntreMensajes){
+                          enviarCabras();
+                          cambioEntreMensajes=true;
+                      } else {
+                    	  enviarEnergia();
+                    	  cambioEntreMensajes=false;
+                      }
 						
 						
 						if(list!=null){
@@ -111,9 +130,10 @@ public class Potrero {
 							}
 							}
 						
+						
 					Thread.sleep(500);
 					}catch (InterruptedException e) {
-						// TODO: handle exception
+						
 					}
 					
 					
@@ -122,6 +142,24 @@ public class Potrero {
 			}
 		};
 		return r;
+	}
+	
+	private void enviarCabras(){
+		// Datos para el mensaje
+		int UserID = user.getId();
+		// identificar que el mensaje es de las cabras
+		String tipo = "goats";
+		int cabras = list.size();
+		cts.sendMessage(new Message(UserID, tipo, cabras));
+	}
+	
+	private void enviarEnergia(){
+		// Envia energia al servidor
+		int UserID = user.getId();
+		// identificar que el mensaje es del potrero
+		String tipo = "energy";
+		int energia = energiaAcumulada;
+		cts.sendMessage(new Message(UserID, tipo, energia));
 	}
 	
 	Runnable promediarConsumo(){
@@ -136,7 +174,7 @@ public class Potrero {
 						
 						Thread.sleep(3000);
 					}catch (InterruptedException e) {
-						// TODO: handle exception
+						
 					}
 					
 					
