@@ -13,7 +13,7 @@ public class Main extends PApplet {
 	private Serial port;
 	private boolean serial;
     private String arduinoInput;
-
+    boolean verbose=true;
     
   
 	
@@ -31,7 +31,7 @@ public class Main extends PApplet {
 				
 			}
 			//ELEGIR EL PUERTO CORRESPONDIENTE DEL ARDUINO 
-			int elegido = 1;
+			int elegido = 0;
 			port = new Serial(this, Serial.list()[elegido], 9600);
 			println("Inicializa en: " + Serial.list()[elegido]);
 		}
@@ -48,7 +48,9 @@ public class Main extends PApplet {
 	
 				  arduinoInput = port.readStringUntil('\n'); 
 					if(arduinoInput!=null){
+						if(verbose){
 						println(arduinoInput); 
+						}
 						if(arduinoInput.contains(":")){
 						String string = arduinoInput;
 						String[] parts = string.split(":");
@@ -75,10 +77,10 @@ public class Main extends PApplet {
 	void initPotrero(){
 
 		   
-		  
+
 		if(Potrero.getInstancia().cabritas.size()==0 && !Potrero.getInstancia().iniciado){
 			Potrero.getInstancia().app=this;
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 10; i++) {
 				Potrero.getInstancia().cabritas.add(new Cabra());
 				
 			}
@@ -135,10 +137,34 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
+
 		initPotrero();
+		
 	}
+	
+  
+	
 
 	public void mouseReleased() {
 	
 	}
+	
+
+     public void keyPressed() {
+           if (keyCode == UP) {
+                  Potrero.getInstancia().anadirCabra();
+             } else if(keyCode == DOWN) {
+                  Potrero.getInstancia().eliminarCabra();
+             }
+           
+           if (key == 'v'){
+        	   if(!verbose){
+        	   verbose=true;
+        	   } else {
+        		   verbose=false;
+        	   }
+           }
+}
+	
+
 }

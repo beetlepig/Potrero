@@ -150,6 +150,7 @@ public class Potrero {
 		// identificar que el mensaje es de las cabras
 		String tipo = "goats";
 		int cabras = list.size();
+		System.out.println("cantidad cabras:" + cabras);
 		cts.sendMessage(new Message(UserID, tipo, cabras));
 	}
 	
@@ -160,6 +161,15 @@ public class Potrero {
 		String tipo = "energy";
 		int energia = energiaAcumulada;
 		cts.sendMessage(new Message(UserID, tipo, energia));
+	}
+	
+	
+	public void eliminarCabra(){
+		list.remove(0);
+	}
+	
+	public void anadirCabra(){
+		list.add(new Cabra());
 	}
 	
 	Runnable promediarConsumo(){

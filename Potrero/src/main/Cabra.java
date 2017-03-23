@@ -36,7 +36,7 @@ public class Cabra {
 	public void setEnergia (int energiaPotrero){
 
 			
-	if(energiaPotrero>0 && energiaAcumuladaCabra<150){
+	if(energiaPotrero-10>0 && energiaAcumuladaCabra<150){
 						
 		Potrero.getInstancia().setEnergiaAcumulada(-10);
 		energiaAcumuladaCabra+=10;
