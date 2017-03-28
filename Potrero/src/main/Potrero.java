@@ -35,6 +35,7 @@ public class Potrero {
 	User user;
 	Communication_to_Server cts;
 	Message msg;
+	
    
 	
 
@@ -44,9 +45,9 @@ public class Potrero {
 		user = new User();
 		cts = Communication_to_Server.getInstance(user) ;
 		//aqui va la ip del server
-		cts.setIp("localhost");
+		cts.setIp("192.168.115.32");
 
-		energiaAcumulada=1000;
+		energiaAcumulada=10000;
 		cabritas= new ArrayList<Cabra>();
 		list= Collections.synchronizedList(cabritas);
         promedio= new Thread(promediarConsumo());

@@ -14,7 +14,7 @@ public class Main extends PApplet {
 	private boolean serial;
     private String arduinoInput;
     boolean verbose=true;
-    
+    boolean comenzadoCliente;
   
 	
 	public void settings() {
@@ -31,12 +31,12 @@ public class Main extends PApplet {
 				
 			}
 			//ELEGIR EL PUERTO CORRESPONDIENTE DEL ARDUINO 
-			int elegido = 0;
+			int elegido = 1;
 			port = new Serial(this, Serial.list()[elegido], 9600);
 			println("Inicializa en: " + Serial.list()[elegido]);
 		}
 		
-	
+		new Thread(combrobarComenzar()).start();
 	}
 
 	public void draw() {
@@ -57,7 +57,7 @@ public class Main extends PApplet {
 						String part1 = parts[0];
 						String part2 = parts[1]; 
 						if(part1.equalsIgnoreCase("promedio")){
-							if((Potrero.getInstancia().iniciado) && ((Potrero.getInstancia().getEnergiaAcumulada()+Float.parseFloat(part2))<20000)){
+							if((Potrero.getInstancia().iniciado) && ((Potrero.getInstancia().getEnergiaAcumulada()+Float.parseFloat(part2))<20000) && Potrero.getInstancia().user.getEmpezar()){
 							anadirEnergia(part2);
 							}
 							
@@ -78,10 +78,10 @@ public class Main extends PApplet {
 
 		   
 
-		if(Potrero.getInstancia().cabritas.size()==0 && !Potrero.getInstancia().iniciado){
+		if(Potrero.getInstancia().list.size()==0 && !Potrero.getInstancia().iniciado){
 			Potrero.getInstancia().app=this;
-			for (int i = 0; i < 10; i++) {
-				Potrero.getInstancia().cabritas.add(new Cabra());
+			for (int i = 0; i < 5; i++) {
+				Potrero.getInstancia().list.add(new Cabra());
 				
 			}
 			Potrero.getInstancia().iniciado=true;
@@ -91,6 +91,35 @@ public class Main extends PApplet {
 		
 			
 			}
+	}
+	
+	private Runnable combrobarComenzar(){
+		Runnable r= new Runnable() {
+			
+			@Override
+			public void run() {
+				while(!Potrero.getInstancia().user.getEmpezar()){
+					
+					try{
+						if(Potrero.getInstancia().user.getEmpezar() && comenzadoCliente){
+							
+							initPotrero();
+							
+					}
+						
+						
+						Thread.sleep(100);
+					}catch(InterruptedException e){
+						e.printStackTrace();
+					}
+					
+					
+					
+				}
+				
+			}
+		};
+		return r;
 	}
 	
 	void anadirEnergia(String instruccion){
@@ -137,8 +166,12 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
-
+		comenzadoCliente=true;
+if(Potrero.getInstancia().user.getEmpezar() && comenzadoCliente){
 		initPotrero();
+} else {
+	System.out.println("servidor no comenzado");
+}
 		
 	}
 	
