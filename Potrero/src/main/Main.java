@@ -106,8 +106,8 @@ public class Main extends PApplet {
 			    while(true){
 			    	try{
 			    		if(Potrero.getInstancia().getEnergiaAcumulada()>0 && Potrero.getInstancia().getEnergiaAcumulada()<20000){
-			    	int mapeo=(int)	map(Potrero.getInstancia().getEnergiaAcumulada(), 0, 20000, 0, 180);
-			    	port.write(mapeo);
+			    	        int mapeo=(int)	map(Potrero.getInstancia().getEnergiaAcumulada(), 0, 20000, 0, 180);
+			             	port.write(mapeo);
 			    		}else if(Potrero.getInstancia().getEnergiaAcumulada()<=0){
 			    			port.write(0);
 			    		} else if (Potrero.getInstancia().getEnergiaAcumulada()>=20000){
