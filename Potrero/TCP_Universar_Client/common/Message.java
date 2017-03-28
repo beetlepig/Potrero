@@ -1,7 +1,6 @@
 package common;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Message implements Serializable {
 
@@ -11,9 +10,15 @@ public class Message implements Serializable {
 	private int data;
 	private int userId;
 	private int destinatioId;
+	private boolean empezar;
 	private Object object;
 
 	// -------- ID USUSARIO ----------
+
+	public Message() {
+		type = "void";
+		data = Integer.MIN_VALUE;
+	}
 
 	public Message(int userId, String type, String textMessage) {
 		this.type = type;
@@ -33,7 +38,13 @@ public class Message implements Serializable {
 		this.userId = userId;
 	}// message with a data number
 
-	// -------- ID USUSARIO + ID DESTINO----------
+	public Message(int userId, String type, boolean empezar) {
+		this.type = type;
+		this.empezar = empezar;
+		this.userId = userId;
+	}// message with a data boolean
+
+	// -------- ID USUARIO + ID DESTINO----------
 
 	public Message(int userId, int destinatioId, String type, String textMessage) {
 		this.type = type;
@@ -80,6 +91,28 @@ public class Message implements Serializable {
 
 	public Object getObject() {
 		return object;
+	}
+
+	public boolean getEmpezar() {
+		return empezar;
+	}
+
+	public void setValues(int userID2, String tipo, int data) {
+		userId = userID2;
+		type = tipo;
+		this.data = data;
+	}
+
+	public boolean equals(Message msg) {
+		if (type.equals(msg.getType()) && data == msg.getData()) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getValuesForRecord() {
+		String rtn = userId + "," + type + "," + getData();
+		return rtn;
 	}
 
 }// MESSAGE

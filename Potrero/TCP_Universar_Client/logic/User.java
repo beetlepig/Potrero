@@ -8,10 +8,11 @@ public class User implements Serializable {
 
 	private String userName;
 	private int id;
+	private boolean empezar;
 
-	private int numberOfGoats = 0;
+	private int goats;
 	// Energy is a %
-	private float energy = 0;
+	private float energy;
 
 	public User() {
 
@@ -20,6 +21,9 @@ public class User implements Serializable {
 	public User(int id, String userName) {
 		this.userName = userName;
 		this.id = id;
+		goats = 0;
+		// Energy is a %
+		energy = 0;
 	}// basic constructor
 
 	// ----------- GETTERS Y SETTERS -------------
@@ -35,16 +39,21 @@ public class User implements Serializable {
 		return userName;
 	}// get user name
 
+	public String getValuesForRecord() {
+		String rtn = id + "," + userName + "," + goats + "," + energy;
+		return rtn;
+	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}// get user name
 
 	public int getNumberOfGoats() {
-		return numberOfGoats;
+		return goats;
 	}// get number of goats
 
 	public void setNumberOfGoats(int numberOfGoats) {
-		this.numberOfGoats = numberOfGoats;
+		this.goats = numberOfGoats;
 	}// set number of goats
 
 	public float getEnergy() {
@@ -54,5 +63,14 @@ public class User implements Serializable {
 	public void setEnergy(float energy) {
 		this.energy = energy;
 	} // set energy
+
+	public boolean getEmpezar() {
+		return empezar;
+	}
+
+	public void setEmpezar(boolean data) {
+		this.empezar = data;
+
+	}
 
 }// USER

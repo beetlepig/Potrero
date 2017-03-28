@@ -26,6 +26,7 @@ public class Communication_to_Server implements Runnable {
 	private boolean connected;
 	private boolean reset;
 	private boolean notifyError;
+	private  Message lastMessage;
 
 	private Communication_to_Server(Logic logic) {
 		this.logic = logic;
@@ -34,8 +35,9 @@ public class Communication_to_Server implements Runnable {
 		connected = true;
 		reset = false;
 		notifyError = false;
+		lastMessage = new Message();
 	}// constructor
-	
+
 	public Communication_to_Server(User user) {
 		this.user = user;
 		socket = null;
@@ -43,6 +45,7 @@ public class Communication_to_Server implements Runnable {
 		connected = true;
 		reset = false;
 		notifyError = false;
+		lastMessage = new Message();
 	}// constructor
 
 	// -------------- CONFIGURATION ----------------
@@ -55,7 +58,7 @@ public class Communication_to_Server implements Runnable {
 		} // if not created
 		return ref;
 	}// get instance
-	
+
 	public static Communication_to_Server getInstance(User user) {
 		if (ref == null) {
 			ref = new Communication_to_Server(user);
@@ -177,16 +180,23 @@ public class Communication_to_Server implements Runnable {
 		case "cambiarId":
 			user.setId(msm.getData());
 			System.out.println("[ My Id is now " + user.getId() + " ]");
+			break;
+
+		case "empezar":
+			user.setEmpezar(msm.getEmpezar());
+			System.out.println("[ Empezar ]");
 		}// main switch
 
 	}// Received Message
 
 	public void sendMessage(Message msm) {
-		if (socket != null) {
-			System.out.println("[ El cliente env�a Message: " + msm.getType() + " ]");
+	//	System.out.println("CCS " + lastMessage.equals(msm) + " " + lastMessage.getStringValues() + " : " + msm.getStringValues());
+		if (socket != null && !lastMessage.equals(msm)) {
+			System.out.println("[ El cliente envia Message: " + msm.getType() + " ]");
 			try {
 				oos.writeObject(msm);
 				oos.flush();
+				lastMessage = msm;
 			} catch (IOException e) {
 				// e.printStackTrace();
 				System.out.println("[ ERROR AL ENVIAR ]");
