@@ -44,7 +44,7 @@ public class Potrero {
 		user = new User();
 		cts = Communication_to_Server.getInstance(user) ;
 		//aqui va la ip del server
-		cts.setIp("127.0.0.1");
+		cts.setIp("localhost");
 
 		energiaAcumulada=1000;
 		cabritas= new ArrayList<Cabra>();

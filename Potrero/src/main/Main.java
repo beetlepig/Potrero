@@ -57,7 +57,7 @@ public class Main extends PApplet {
 						String part1 = parts[0];
 						String part2 = parts[1]; 
 						if(part1.equalsIgnoreCase("promedio")){
-							if(Potrero.getInstancia().iniciado){
+							if((Potrero.getInstancia().iniciado) && ((Potrero.getInstancia().getEnergiaAcumulada()+Float.parseFloat(part2))<20000)){
 							anadirEnergia(part2);
 							}
 							
